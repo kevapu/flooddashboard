@@ -17,7 +17,8 @@ class MonitorScreen extends StatefulWidget {
 
 class _MonitorScreenState extends State<MonitorScreen>
     with TickerProviderStateMixin {
-  String selectedDrain = 'Drain 001';
+  String? selectedDrain;  // Changed to nullable
+
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
 
@@ -34,7 +35,7 @@ class _MonitorScreenState extends State<MonitorScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    if (selectedDrain == 'Drain 001') {
+    if (selectedDrain != null && isSupportedDrain(selectedDrain!)) {
       _controller.forward();
     }
   }
@@ -45,14 +46,19 @@ class _MonitorScreenState extends State<MonitorScreen>
     super.dispose();
   }
 
+  bool isSupportedDrain(String drain) {
+    // For drain 001 to 004 show charts
+    return ['Drain 001', 'Drain 002', 'Drain 003', 'Drain 004'].contains(drain);
+  }
+
   void _onDrainChange(String? value) {
-    if (value == 'Drain 001') {
+    if (value != null && isSupportedDrain(value)) {
       _controller.forward(from: 0.0);
     } else {
       _controller.reset();
     }
     setState(() {
-      selectedDrain = value!;
+      selectedDrain = value;
     });
   }
 
@@ -122,6 +128,10 @@ class _MonitorScreenState extends State<MonitorScreen>
                         const SizedBox(height: 20),
                         DropdownButtonFormField<String>(
                           value: selectedDrain,
+                          hint: Text(
+                            'Select a Drain',
+                            style: TextStyle(color: Colors.grey),
+                          ),
                           items: List.generate(
                             6,
                             (index) => DropdownMenuItem(
@@ -133,8 +143,7 @@ class _MonitorScreenState extends State<MonitorScreen>
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: dropdownColor,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 12),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(14),
                               borderSide: BorderSide.none,
@@ -153,51 +162,78 @@ class _MonitorScreenState extends State<MonitorScreen>
                 ),
                 const SizedBox(height: 40),
 
-                // Slide-in chart row only for Drain 001
-                if (selectedDrain == 'Drain 001')
+                // Slide-in chart row for Drain 001 to 004
+                if (selectedDrain != null && isSupportedDrain(selectedDrain!))
                   SlideTransition(
                     position: _slideAnimation,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          children: [
-                            Text("Flowrate vs Time", style: chartTitleStyle),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: 300,
-                              height: 300,
-                              child: LineChart(
-                                sampleChartData("Flowrate"),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(205, 231, 158, 254),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              Center(
+                                child: Text("Flowrate vs Time", style: chartTitleStyle),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: 300,
+                                height: 300,
+                                child: LineChart(
+                                  sampleChartData(selectedDrain!, "Flowrate"),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          children: [
-                            Text("Water Height vs Time", style: chartTitleStyle),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: 300,
-                              height: 300,
-                              child: LineChart(
-                                sampleChartData("Water Height"),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(205, 231, 158, 254),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              Center(
+                                child: Text("Water Height vs Time", style: chartTitleStyle),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: 300,
+                                height: 300,
+                                child: LineChart(
+                                  sampleChartData(selectedDrain!, "Water Height"),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          children: [
-                            Text("Rain Rate vs Time", style: chartTitleStyle),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: 300,
-                              height: 300,
-                              child: LineChart(
-                                sampleChartData("Rain Rate"),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(205, 231, 158, 254),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              Center(
+                                child: Text("Rain Rate vs Time", style: chartTitleStyle),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: 300,
+                                height: 300,
+                                child: LineChart(
+                                  sampleChartData(selectedDrain!, "Rain Rate"),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -216,7 +252,62 @@ class _MonitorScreenState extends State<MonitorScreen>
     color: primaryColor,
   );
 
-  LineChartData sampleChartData(String yAxisLabel) {
+  LineChartData sampleChartData(String drain, String yAxisLabel) {
+    // Provide different dummy data for different drains
+    List<FlSpot> spots;
+
+    switch (drain) {
+      case 'Drain 001':
+        spots = [
+          FlSpot(0, 5),
+          FlSpot(1, 10),
+          FlSpot(2, 6),
+          FlSpot(3, 14),
+          FlSpot(4, 11),
+          FlSpot(5, 17),
+        ];
+        break;
+      case 'Drain 002':
+        spots = [
+          FlSpot(0, 3),
+          FlSpot(1, 8),
+          FlSpot(2, 7),
+          FlSpot(3, 10),
+          FlSpot(4, 9),
+          FlSpot(5, 12),
+        ];
+        break;
+      case 'Drain 003':
+        spots = [
+          FlSpot(0, 6),
+          FlSpot(1, 7),
+          FlSpot(2, 9),
+          FlSpot(3, 13),
+          FlSpot(4, 14),
+          FlSpot(5, 16),
+        ];
+        break;
+      case 'Drain 004':
+        spots = [
+          FlSpot(0, 4),
+          FlSpot(1, 6),
+          FlSpot(2, 5),
+          FlSpot(3, 8),
+          FlSpot(4, 10),
+          FlSpot(5, 15),
+        ];
+        break;
+      default:
+        spots = [
+          FlSpot(0, 0),
+          FlSpot(1, 0),
+          FlSpot(2, 0),
+          FlSpot(3, 0),
+          FlSpot(4, 0),
+          FlSpot(5, 0),
+        ];
+    }
+
     return LineChartData(
       titlesData: FlTitlesData(
         leftTitles: AxisTitles(
@@ -243,14 +334,7 @@ class _MonitorScreenState extends State<MonitorScreen>
       borderData: FlBorderData(show: true),
       lineBarsData: [
         LineChartBarData(
-          spots: [
-            FlSpot(0, 5),
-            FlSpot(1, 10),
-            FlSpot(2, 6),
-            FlSpot(3, 14),
-            FlSpot(4, 11),
-            FlSpot(5, 17),
-          ],
+          spots: spots,
           isCurved: true,
           color: primaryColor,
           barWidth: 3,
