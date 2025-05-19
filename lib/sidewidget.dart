@@ -1,13 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'troublescorescreen.dart';
+import 'homescreen.dart';
+import 'monitorscreen.dart';
+import 'notificationscreen.dart';
+import 'addordeletedrain.dart';
+import 'drainmapscreen.dart';
 
-import '../screens/home_screen.dart';
-import '../screens/drain_map_screen.dart';
-import '../screens/monitor_screen.dart';
-import '../screens/add_delete_drain_screen.dart';
-import '../screens/trouble_score_screen.dart';
-import '../screens/notifications_screen.dart';
-import '../themes/app_theme.dart';
+final Color primaryColor = Color(0xFF0062BD);
+final Color secondaryColor = Color(0xFF00BFA6);
+final Color accentColor = Color(0xFFFF6F61);
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Drain Tracker',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+            .copyWith(
+              primary: primaryColor,
+              secondary: secondaryColor,
+              tertiary: accentColor,
+            ),
+        textTheme: GoogleFonts.poppinsTextTheme(),
+        drawerTheme: DrawerThemeData(
+          backgroundColor: Colors.white,
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: primaryColor,
+          elevation: 5,
+          shadowColor: primaryColor.withValues(alpha: 0.5),
+          titleTextStyle: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: accentColor,
+            foregroundColor: Colors.white,
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+            textStyle: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          hintStyle: GoogleFonts.poppins(color: Colors.grey.shade600),
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+      home: const HomeScreen(),
+    );
+  }
+}
 
 class AppDrawer extends StatelessWidget {
   final String currentScreen;
@@ -18,10 +82,8 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget buildTile(String title, IconData icon, Widget destination) {
       final bool isSelected = currentScreen == title;
-      final primaryColor = AppTheme.primaryColor;
-
       return Material(
-        color: isSelected ? primaryColor.withOpacity(0.15) : Colors.transparent,
+        color: isSelected ? primaryColor.withValues(alpha: 0.15) : Colors.transparent,
         child: ListTile(
           leading: Icon(icon,
               color: isSelected ? primaryColor : Colors.grey.shade700,
@@ -56,7 +118,7 @@ class AppDrawer extends StatelessWidget {
               ),
             );
           },
-          hoverColor: primaryColor.withOpacity(0.1),
+          hoverColor: primaryColor.withValues(alpha:0.1),
         ),
       );
     }
@@ -72,16 +134,13 @@ class AppDrawer extends StatelessWidget {
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    AppTheme.primaryColor,
-                    AppTheme.secondaryColor,
-                  ],
+                  colors: [primaryColor, secondaryColor],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.primaryColor.withOpacity(0.4),
+                    color: primaryColor.withValues(alpha: 0.4),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -97,7 +156,7 @@ class AppDrawer extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   shadows: [
-                    const Shadow(
+                    Shadow(
                       color: Colors.black26,
                       offset: Offset(1, 1),
                       blurRadius: 4,
