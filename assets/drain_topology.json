@@ -1,0 +1,554 @@
+{
+  "drain_001": {
+    "lat": 3.125612,
+    "lon": 101.704189,
+    "connected_to": [
+      "drain_023",
+      "drain_048",
+      "drain_035"
+    ]
+  },
+  "drain_002": {
+    "lat": 3.122461,
+    "lon": 101.701425,
+    "connected_to": [
+      "drain_040",
+      "drain_023"
+    ]
+  },
+  "drain_003": {
+    "lat": 3.139621,
+    "lon": 101.698998,
+    "connected_to": [
+      "drain_015",
+      "drain_011",
+      "drain_030"
+    ]
+  },
+  "drain_004": {
+    "lat": 3.130035,
+    "lon": 101.6808,
+    "connected_to": [
+      "drain_005",
+      "drain_050",
+      "drain_036"
+    ]
+  },
+  "drain_005": {
+    "lat": 3.134558,
+    "lon": 101.685938,
+    "connected_to": [
+      "drain_004",
+      "drain_045",
+      "drain_019"
+    ]
+  },
+  "drain_006": {
+    "lat": 3.149608,
+    "lon": 101.681384,
+    "connected_to": [
+      "drain_032",
+      "drain_047",
+      "drain_014"
+    ]
+  },
+  "drain_007": {
+    "lat": 3.150366,
+    "lon": 101.700132,
+    "connected_to": [
+      "drain_010",
+      "drain_022",
+      "drain_058",
+      "drain_034"
+    ]
+  },
+  "drain_008": {
+    "lat": 3.141878,
+    "lon": 101.707419,
+    "connected_to": [
+      "drain_028",
+      "drain_054"
+    ]
+  },
+  "drain_009": {
+    "lat": 3.129143,
+    "lon": 101.708299,
+    "connected_to": [
+      "drain_016",
+      "drain_051",
+      "drain_060",
+      "drain_048",
+      "drain_053"
+    ]
+  },
+  "drain_010": {
+    "lat": 3.149908,
+    "lon": 101.703137,
+    "connected_to": [
+      "drain_007",
+      "drain_034",
+      "drain_037",
+      "drain_059"
+    ]
+  },
+  "drain_011": {
+    "lat": 3.142579,
+    "lon": 101.700717,
+    "connected_to": [
+      "drain_003",
+      "drain_058",
+      "drain_015",
+      "drain_028",
+      "drain_029"
+    ]
+  },
+  "drain_012": {
+    "lat": 3.146169,
+    "lon": 101.691392,
+    "connected_to": [
+      "drain_038",
+      "drain_021",
+      "drain_039"
+    ]
+  },
+  "drain_013": {
+    "lat": 3.134727,
+    "lon": 101.693158,
+    "connected_to": [
+      "drain_055",
+      "drain_024",
+      "drain_025"
+    ]
+  },
+  "drain_014": {
+    "lat": 3.142181,
+    "lon": 101.680772,
+    "connected_to": [
+      "drain_006",
+      "drain_032",
+      "drain_044"
+    ]
+  },
+  "drain_015": {
+    "lat": 3.138023,
+    "lon": 101.700252,
+    "connected_to": [
+      "drain_003",
+      "drain_011",
+      "drain_030"
+    ]
+  },
+  "drain_016": {
+    "lat": 3.127721,
+    "lon": 101.708901,
+    "connected_to": [
+      "drain_009",
+      "drain_051",
+      "drain_060",
+      "drain_026",
+      "drain_053"
+    ]
+  },
+  "drain_017": {
+    "lat": 3.126543,
+    "lon": 101.688335,
+    "connected_to": [
+      "drain_033",
+      "drain_050",
+      "drain_036"
+    ]
+  },
+  "drain_018": {
+    "lat": 3.12755,
+    "lon": 101.695492,
+    "connected_to": [
+      "drain_043",
+      "drain_031",
+      "drain_055"
+    ]
+  },
+  "drain_019": {
+    "lat": 3.135616,
+    "lon": 101.688085,
+    "connected_to": [
+      "drain_005",
+      "drain_024",
+      "drain_045"
+    ]
+  },
+  "drain_020": {
+    "lat": 3.133238,
+    "lon": 101.703304,
+    "connected_to": [
+      "drain_054",
+      "drain_035"
+    ]
+  },
+  "drain_021": {
+    "lat": 3.148901,
+    "lon": 101.692133,
+    "connected_to": [
+      "drain_012",
+      "drain_038",
+      "drain_027",
+      "drain_029"
+    ]
+  },
+  "drain_022": {
+    "lat": 3.149694,
+    "lon": 101.696859,
+    "connected_to": [
+      "drain_007",
+      "drain_029",
+      "drain_038"
+    ]
+  },
+  "drain_023": {
+    "lat": 3.124984,
+    "lon": 101.702306,
+    "connected_to": [
+      "drain_001",
+      "drain_002",
+      "drain_040",
+      "drain_035"
+    ]
+  },
+  "drain_024": {
+    "lat": 3.136769,
+    "lon": 101.690023,
+    "connected_to": [
+      "drain_013",
+      "drain_019",
+      "drain_046",
+      "drain_041",
+      "drain_042"
+    ]
+  },
+  "drain_025": {
+    "lat": 3.13238,
+    "lon": 101.69626,
+    "connected_to": [
+      "drain_013",
+      "drain_055"
+    ]
+  },
+  "drain_026": {
+    "lat": 3.125829,
+    "lon": 101.707804,
+    "connected_to": [
+      "drain_016",
+      "drain_051"
+    ]
+  },
+  "drain_027": {
+    "lat": 3.15323,
+    "lon": 101.688347,
+    "connected_to": [
+      "drain_021",
+      "drain_047",
+      "drain_049"
+    ]
+  },
+  "drain_028": {
+    "lat": 3.14331,
+    "lon": 101.704955,
+    "connected_to": [
+      "drain_008",
+      "drain_011"
+    ]
+  },
+  "drain_029": {
+    "lat": 3.145716,
+    "lon": 101.697307,
+    "connected_to": [
+      "drain_011",
+      "drain_021",
+      "drain_022",
+      "drain_058"
+    ]
+  },
+  "drain_030": {
+    "lat": 3.13793,
+    "lon": 101.702454,
+    "connected_to": [
+      "drain_003",
+      "drain_015",
+      "drain_054"
+    ]
+  },
+  "drain_031": {
+    "lat": 3.127331,
+    "lon": 101.698272,
+    "connected_to": [
+      "drain_018",
+      "drain_043"
+    ]
+  },
+  "drain_032": {
+    "lat": 3.145128,
+    "lon": 101.682592,
+    "connected_to": [
+      "drain_006",
+      "drain_014",
+      "drain_044"
+    ]
+  },
+  "drain_033": {
+    "lat": 3.125929,
+    "lon": 101.687148,
+    "connected_to": [
+      "drain_017",
+      "drain_050",
+      "drain_036"
+    ]
+  },
+  "drain_034": {
+    "lat": 3.150757,
+    "lon": 101.704166,
+    "connected_to": [
+      "drain_007",
+      "drain_010",
+      "drain_037",
+      "drain_057",
+      "drain_059"
+    ]
+  },
+  "drain_035": {
+    "lat": 3.128551,
+    "lon": 101.703021,
+    "connected_to": [
+      "drain_001",
+      "drain_020",
+      "drain_023",
+      "drain_048"
+    ]
+  },
+  "drain_036": {
+    "lat": 3.123343,
+    "lon": 101.684054,
+    "connected_to": [
+      "drain_004",
+      "drain_017",
+      "drain_033",
+      "drain_050"
+    ]
+  },
+  "drain_037": {
+    "lat": 3.147884,
+    "lon": 101.703932,
+    "connected_to": [
+      "drain_010",
+      "drain_034",
+      "drain_057"
+    ]
+  },
+  "drain_038": {
+    "lat": 3.148375,
+    "lon": 101.691836,
+    "connected_to": [
+      "drain_012",
+      "drain_021",
+      "drain_022"
+    ]
+  },
+  "drain_039": {
+    "lat": 3.14223,
+    "lon": 101.688772,
+    "connected_to": [
+      "drain_012",
+      "drain_044",
+      "drain_046"
+    ]
+  },
+  "drain_040": {
+    "lat": 3.123627,
+    "lon": 101.701496,
+    "connected_to": [
+      "drain_002",
+      "drain_023"
+    ]
+  },
+  "drain_041": {
+    "lat": 3.138721,
+    "lon": 101.692714,
+    "connected_to": [
+      "drain_024",
+      "drain_046",
+      "drain_052"
+    ]
+  },
+  "drain_042": {
+    "lat": 3.138322,
+    "lon": 101.687993,
+    "connected_to": [
+      "drain_024",
+      "drain_056"
+    ]
+  },
+  "drain_043": {
+    "lat": 3.127705,
+    "lon": 101.694366,
+    "connected_to": [
+      "drain_018",
+      "drain_031",
+      "drain_055",
+      "drain_050"
+    ]
+  },
+  "drain_044": {
+    "lat": 3.143104,
+    "lon": 101.68597,
+    "connected_to": [
+      "drain_014",
+      "drain_032",
+      "drain_039"
+    ]
+  },
+  "drain_045": {
+    "lat": 3.136707,
+    "lon": 101.685237,
+    "connected_to": [
+      "drain_005",
+      "drain_019",
+      "drain_056"
+    ]
+  },
+  "drain_046": {
+    "lat": 3.138787,
+    "lon": 101.690744,
+    "connected_to": [
+      "drain_024",
+      "drain_039",
+      "drain_041",
+      "drain_052"
+    ]
+  },
+  "drain_047": {
+    "lat": 3.152017,
+    "lon": 101.68779,
+    "connected_to": [
+      "drain_006",
+      "drain_027",
+      "drain_049"
+    ]
+  },
+  "drain_048": {
+    "lat": 3.128132,
+    "lon": 101.7054,
+    "connected_to": [
+      "drain_001",
+      "drain_009",
+      "drain_035"
+    ]
+  },
+  "drain_049": {
+    "lat": 3.153792,
+    "lon": 101.691398,
+    "connected_to": [
+      "drain_027",
+      "drain_047"
+    ]
+  },
+  "drain_050": {
+    "lat": 3.126196,
+    "lon": 101.686511,
+    "connected_to": [
+      "drain_004",
+      "drain_017",
+      "drain_033",
+      "drain_036",
+      "drain_043"
+    ]
+  },
+  "drain_051": {
+    "lat": 3.127382,
+    "lon": 101.70954,
+    "connected_to": [
+      "drain_009",
+      "drain_016",
+      "drain_026",
+      "drain_060"
+    ]
+  },
+  "drain_052": {
+    "lat": 3.14119,
+    "lon": 101.69337,
+    "connected_to": [
+      "drain_041",
+      "drain_046"
+    ]
+  },
+  "drain_053": {
+    "lat": 3.132043,
+    "lon": 101.709358,
+    "connected_to": [
+      "drain_009",
+      "drain_016",
+      "drain_060"
+    ]
+  },
+  "drain_054": {
+    "lat": 3.136184,
+    "lon": 101.706458,
+    "connected_to": [
+      "drain_008",
+      "drain_020",
+      "drain_030"
+    ]
+  },
+  "drain_055": {
+    "lat": 3.132002,
+    "lon": 101.69383,
+    "connected_to": [
+      "drain_013",
+      "drain_018",
+      "drain_025",
+      "drain_043"
+    ]
+  },
+  "drain_056": {
+    "lat": 3.138336,
+    "lon": 101.685818,
+    "connected_to": [
+      "drain_042",
+      "drain_045"
+    ]
+  },
+  "drain_057": {
+    "lat": 3.149503,
+    "lon": 101.709019,
+    "connected_to": [
+      "drain_034",
+      "drain_037",
+      "drain_059"
+    ]
+  },
+  "drain_058": {
+    "lat": 3.146857,
+    "lon": 101.700328,
+    "connected_to": [
+      "drain_007",
+      "drain_011",
+      "drain_029"
+    ]
+  },
+  "drain_059": {
+    "lat": 3.153053,
+    "lon": 101.712015,
+    "connected_to": [
+      "drain_010",
+      "drain_034",
+      "drain_057"
+    ]
+  },
+  "drain_060": {
+    "lat": 3.129031,
+    "lon": 101.710615,
+    "connected_to": [
+      "drain_009",
+      "drain_016",
+      "drain_051",
+      "drain_053"
+    ]
+  }
+}

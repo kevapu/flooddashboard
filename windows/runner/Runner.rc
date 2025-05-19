@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "flooddashboard" "\0"
+            VALUE "FileDescription", "gps_tracker" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "flooddashboard" "\0"
+            VALUE "InternalName", "gps_tracker" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "flooddashboard.exe" "\0"
-            VALUE "ProductName", "flooddashboard" "\0"
+            VALUE "OriginalFilename", "gps_tracker.exe" "\0"
+            VALUE "ProductName", "gps_tracker" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

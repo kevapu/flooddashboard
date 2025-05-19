@@ -1,4 +1,4 @@
-package com.example.flooddashboard
+package com.example.gps_tracker
 
 import io.flutter.embedding.android.FlutterActivity
 
