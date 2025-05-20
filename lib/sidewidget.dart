@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
             ),
         textTheme: GoogleFonts.poppinsTextTheme(),
         drawerTheme: DrawerThemeData(
-          backgroundColor: Colors.white,
+          backgroundColor: const Color.fromARGB(255, 38, 201, 242),
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: primaryColor,
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: accentColor,
-            foregroundColor: Colors.white,
+            foregroundColor: const Color.fromARGB(255, 75, 218, 254),
             elevation: 5,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: Colors.white,
+          fillColor: const Color.fromARGB(255, 60, 188, 252),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           border: OutlineInputBorder(

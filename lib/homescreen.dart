@@ -1,11 +1,43 @@
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'sidewidget.dart';
 import 'notificationscreen.dart';
+import 'animatedbackground.dart';
+import 'package:intl/intl.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late String _currentTime;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentTime = _getTime();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _currentTime = _getTime();
+      });
+    });
+  }
+
+  String _getTime() {
+    final now = DateTime.now();
+    return DateFormat('hh:mm a').format(now);
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   void _goToNotifications(BuildContext context) {
     Navigator.push(
@@ -19,111 +51,130 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       drawer: const AppDrawer(currentScreen: 'Home'),
       appBar: AppBar(
-        title: const Text('Home'),
-        centerTitle: true,
+        backgroundColor: Colors.lightBlue,
         elevation: 6,
-        shadowColor: primaryColor.withValues(alpha: 0.4),
+        centerTitle: true,
+        shadowColor: Colors.blue.withOpacity(0.4),
+        title: Text(
+          'Home',
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage("assets/background.jpg"), fit: BoxFit.cover),
-              gradient: LinearGradient(
-                colors: [
-                  primaryColor.withValues(alpha: 0.1),
-                  secondaryColor.withValues(alpha: 0.1),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: Center(
-              child: Card(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 32),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Welcome to UrbanPulse',
-                        style: GoogleFonts.poppins(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: primaryColor,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Redefining Urban Intelligence. Seamlessly monitor, track, and manage drainage systems with precision.',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.grey.shade700,
-                          height: 1.4,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 14,
-            right: 14,
-            child: GestureDetector(
-              onTap: () => _goToNotifications(context),
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [accentColor, accentColor.withValues(alpha: 0.85)],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: accentColor.withValues(alpha: 0.6),
-                      offset: const Offset(0, 3),
-                      blurRadius: 8,
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
+          BackgroundWrapper(
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    const Icon(Icons.notification_important, color: Colors.white, size: 20),
-                    const SizedBox(width: 12),
-                    const Text(
-                      'VIEW PRIORITY NOTIFICATIONS',
-                      style: TextStyle(
+                    // Top white welcome container
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                      decoration: const BoxDecoration(
                         color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.5,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black26,
-                            offset: Offset(0, 1),
-                            blurRadius: 3,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Welcome to Urban Pulse',
+                            style: GoogleFonts.poppins(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.blue,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // Girl and text bubble side by side
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text bubble
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(16.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                '"Redefining Urban Intelligence. Seamlessly monitor, track, and manage drainage systems with precision."',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  color: Colors.blue,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(width: 9),
+
+                          // Girl image
+                          Image.asset(
+                            'assets/girl.png',
+                            width: 450,
+                            height: 450,
+                            fit: BoxFit.contain,
                           ),
                         ],
                       ),
                     ),
+
+                    // Optional old small time container
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      
+                    ),
                   ],
                 ),
+              ),
+            ),
+          ),
+
+          // New time at bottom-left
+          Positioned(
+            bottom: 16,
+            left: 50,
+            child: Text(
+              _currentTime,
+              style: GoogleFonts.poppins(
+                fontSize: 60,
+                color: Colors.white,
               ),
             ),
           ),

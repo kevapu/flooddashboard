@@ -18,6 +18,7 @@ dependencies:
   google_fonts: any
   animated_background: ^2.0.0
   fl_chart: ^0.63.0
+  intl: ^0.18.1
   
 dev_dependencies:
   flutter_test:
@@ -31,3 +32,4 @@ flutter:
   assets:
     - assets/drain_topology.json
     - assets/background.jpg
+    - assets/girl.png

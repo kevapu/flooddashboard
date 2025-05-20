@@ -186,53 +186,63 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
     return Scaffold(
       drawer: const AppDrawer(currentScreen: 'Drain Map'),
       appBar: AppBar(
-        title: const Text('Drain Network Map'),
-        centerTitle: true,
-        elevation: 6,
-        shadowColor: primaryColor.withValues(alpha: 0.4),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(66),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Material(
-                    elevation: 4,
-                    shadowColor: Colors.black26,
-                    borderRadius: BorderRadius.circular(16),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search Drain ID (001-060)',
-                        prefixIcon: const Icon(Icons.search),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      textInputAction: TextInputAction.search,
-                      onSubmitted: (_) => _searchDrain(),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                ElevatedButton(
-                  onPressed: _searchDrain,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 14,
-                      horizontal: 24,
-                    ),
-                    shape: RoundedRectangleBorder(
+          backgroundColor: Colors.lightBlue, // Sky blue background
+          title: const Text(
+            'Drain Network Map',
+            style: TextStyle(
+              color: Colors.white,         // Title in white
+              fontSize: 22,                // Increased font size
+              fontWeight: FontWeight.bold, // Optional: make it bold
+            ),
+          ),
+          centerTitle: true,
+          elevation: 6,
+          shadowColor: primaryColor.withOpacity(0.4), // Corrected method name
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(66),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Material(
+                      elevation: 4,
+                      shadowColor: Colors.black26,
                       borderRadius: BorderRadius.circular(16),
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search Drain ID (001-060)',
+                          prefixIcon: const Icon(Icons.search),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        textInputAction: TextInputAction.search,
+                        onSubmitted: (_) => _searchDrain(),
+                      ),
                     ),
                   ),
-                  child: const Text('Go'),
-                ),
-              ],
+                  const SizedBox(width: 12),
+                  ElevatedButton(
+                    onPressed: _searchDrain,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 14,
+                        horizontal: 24,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      backgroundColor: Colors.lightBlue.shade700, // optional: match AppBar
+                    ),
+                    child: const Text('Go'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
+
       body: Stack(
         children: [
           Container(

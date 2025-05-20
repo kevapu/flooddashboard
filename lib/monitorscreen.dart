@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:animated_background/animated_background.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'sidewidget.dart';
+import 'animatedbackground.dart';  // <-- Import your new animated background widget
 
 final Color primaryColor = Color.fromARGB(255, 69, 87, 244);
 final Color secondaryColor = Color(0xFF87CEFA);
@@ -67,37 +67,22 @@ class _MonitorScreenState extends State<MonitorScreen>
     return Scaffold(
       drawer: const AppDrawer(currentScreen: 'Monitor'),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 110, 149, 248),
-        elevation: 6,
-        centerTitle: true,
-        shadowColor: primaryColor.withOpacity(0.4),
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-            color: primaryColor,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            'Monitor',
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              color: Colors.white,
+           backgroundColor: Colors.lightBlue,
+            elevation: 6,
+            centerTitle: true,
+            shadowColor: primaryColor.withOpacity(0.4),
+            title: Text(
+              'Monitor',
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.w600, // Optional: add weight if needed
+              ),
             ),
           ),
-        ),
-      ),
-      body: AnimatedBackground(
-        vsync: this,
-        behaviour: RandomParticleBehaviour(
-          options: const ParticleOptions(
-            spawnMaxRadius: 50,
-            spawnMinSpeed: 15,
-            spawnMaxSpeed: 40,
-            particleCount: 70,
-            spawnOpacity: 0.3,
-            baseColor: Colors.blueAccent,
-          ),
-        ),
+
+      body:  BackgroundWrapper(
+       
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
@@ -143,7 +128,8 @@ class _MonitorScreenState extends State<MonitorScreen>
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: dropdownColor,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(14),
                               borderSide: BorderSide.none,
@@ -170,69 +156,90 @@ class _MonitorScreenState extends State<MonitorScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(205, 231, 158, 254),
-                            borderRadius: BorderRadius.circular(20),
+                            border:
+                                Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 3),
+                            borderRadius: BorderRadius.circular(24),
                           ),
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Text("Flowrate vs Time", style: chartTitleStyle),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                width: 300,
-                                height: 300,
-                                child: LineChart(
-                                  sampleChartData(selectedDrain!, "Flowrate"),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                               color: Colors.white, 
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Text("Flowrate vs Time", style: chartTitleStyle),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  width: 300,
+                                  height: 300,
+                                  child: LineChart(
+                                    sampleChartData(selectedDrain!, "Flowrate"),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(205, 231, 158, 254),
-                            borderRadius: BorderRadius.circular(20),
+                            border:
+                                Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 3),
+                            borderRadius: BorderRadius.circular(24),
                           ),
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Text("Water Height vs Time", style: chartTitleStyle),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                width: 300,
-                                height: 300,
-                                child: LineChart(
-                                  sampleChartData(selectedDrain!, "Water Height"),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                               color: Colors.white, 
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Text("Water Height vs Time", style: chartTitleStyle),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  width: 300,
+                                  height: 300,
+                                  child: LineChart(
+                                    sampleChartData(selectedDrain!, "Water Height"),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(205, 231, 158, 254),
-                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 4, 4, 4), width: 3),
+                            borderRadius: BorderRadius.circular(24),
                           ),
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Text("Rain Rate vs Time", style: chartTitleStyle),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                width: 300,
-                                height: 300,
-                                child: LineChart(
-                                  sampleChartData(selectedDrain!, "Rain Rate"),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                               color: Colors.white, 
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Text("Rain Rate vs Time", style: chartTitleStyle),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  width: 300,
+                                  height: 300,
+                                  child: LineChart(
+                                    sampleChartData(selectedDrain!, "Rain Rate"),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
