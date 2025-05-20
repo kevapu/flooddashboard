@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'sidewidget.dart';
-import 'notificationscreen.dart';
+
 
 
 class DrainMapScreen extends StatefulWidget {
@@ -174,12 +174,7 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
     }
   }
 
-  void _goToNotifications(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const NotificationsScreen()),
-    );
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -276,59 +271,7 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
                     compassEnabled: true,
                   ),
           ),
-          Positioned(
-            bottom: 14,
-            left: 20,
-            right: 20,
-            child: GestureDetector(
-              onTap: () => _goToNotifications(context),
-              child: Container(
-                height: 44,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [accentColor, accentColor.withValues(alpha: 0.9)],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                  borderRadius: BorderRadius.circular(22),
-                  boxShadow: [
-                    BoxShadow(
-                      color: accentColor.withValues(alpha:0.65),
-                      offset: const Offset(0, 3),
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.notification_important,
-                        color: Colors.white, size: 22),
-                    const SizedBox(width: 14),
-                    const Text(
-                      'VIEW PRIORITY NOTIFICATIONS',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.6,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black26,
-                            offset: Offset(0, 1),
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          
         ],
       ),
       floatingActionButton: FloatingActionButton(

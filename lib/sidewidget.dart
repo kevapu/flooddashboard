@@ -172,7 +172,7 @@ class AppDrawer extends StatelessWidget {
                   buildTile('Home', Icons.home_outlined, const HomeScreen()),
                   buildTile('Drain Map', Icons.map_outlined, const DrainMapScreen()),
                   buildTile('Monitor', Icons.monitor_outlined, const MonitorScreen()),
-                  buildTile('Add/Delete Drain', Icons.edit_outlined, const AddDeleteDrainScreen()),
+                  buildTile('Status Maintenance', Icons.edit_outlined, const AddDeleteDrainScreen()),
                   buildTile('Trouble Score', Icons.bar_chart_outlined, const TroubleScoreScreen()),
                   buildTile('Notifications', Icons.notifications_outlined, const NotificationsScreen()),
                 ],
