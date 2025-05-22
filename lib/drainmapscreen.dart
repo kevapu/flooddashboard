@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'sidewidget.dart';
-
-
+import '../services/firebase_service.dart';  // ADD THIS
+import '../models/region_risk_model.dart';   // ADD THIS
 
 class DrainMapScreen extends StatefulWidget {
   const DrainMapScreen({super.key});
@@ -17,9 +17,11 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
   Map<String, dynamic> _drainMap = {}; // Initialize as empty map
   Set<Polyline> _drainPolylines = {};
   Set<Marker> _markers = {};
+  Set<Polygon> _regionPolygons = {}; // ADD THIS for region overlays
   TextEditingController _searchController = TextEditingController();
   GoogleMapController? _mapController;
   bool _loading = true;
+  RegionAnalysis? _regionAnalysis; // ADD THIS
 
   @override
   void initState() {
@@ -60,9 +62,6 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
     Set<Polyline> polylines = {};
     Set<String> processed = {};
     int polylineId = 1;
-    
-
-
     
     drainMap.forEach((drainId, drainData) {
       final lat = drainData['lat']?.toDouble();
@@ -116,22 +115,113 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
 
     drainMap.forEach((drainId, data) {
       if (data['lat'] is double && data['lon'] is double) {
+        // Get marker color based on individual drain status
+        Color markerColor = _getMarkerColorForDrain(drainId);
+        
         markers.add(
           Marker(
             markerId: MarkerId(drainId),
             position: LatLng(data['lat'], data['lon']),
             infoWindow: InfoWindow(
               title: drainId,
-              snippet: 'Tap for details',
+              snippet: _getDrainStatusText(drainId),
             ),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueAzure),
+            icon: BitmapDescriptor.defaultMarkerWithHue(_getMarkerHue(markerColor)),
           ),
         );
       }
     });
 
     return markers;
+  }
+
+  // ADD THIS: Build region polygons based on risk analysis
+  Set<Polygon> buildRegionPolygons(RegionAnalysis regionAnalysis) {
+    Set<Polygon> polygons = {};
+    
+    for (RegionRisk region in regionAnalysis.regions) {
+      List<LatLng> regionPoints = [];
+      
+      // Get coordinates for all drains in this region
+      for (String drainId in region.nodes) {
+        final drainData = _drainMap[drainId];
+        if (drainData != null && 
+            drainData['lat'] is double && 
+            drainData['lon'] is double) {
+          regionPoints.add(LatLng(drainData['lat'], drainData['lon']));
+        }
+      }
+      
+      if (regionPoints.length >= 3) {
+        // Create a convex hull or simple polygon around the points
+        List<LatLng> polygonPoints = _createPolygonFromPoints(regionPoints);
+        
+        polygons.add(
+          Polygon(
+            polygonId: PolygonId(region.regionId),
+            points: polygonPoints,
+            fillColor: region.getRiskColor().withOpacity(0.3),
+            strokeColor: region.getRiskColor(),
+            strokeWidth: 2,
+          ),
+        );
+      }
+    }
+    
+    return polygons;
+  }
+
+  // ADD THIS: Create a polygon around region points
+  List<LatLng> _createPolygonFromPoints(List<LatLng> points) {
+    if (points.length < 3) return points;
+    
+    // Simple approach: create a bounding polygon
+    // You can implement a more sophisticated convex hull algorithm if needed
+    double minLat = points.map((p) => p.latitude).reduce((a, b) => a < b ? a : b);
+    double maxLat = points.map((p) => p.latitude).reduce((a, b) => a > b ? a : b);
+    double minLng = points.map((p) => p.longitude).reduce((a, b) => a < b ? a : b);
+    double maxLng = points.map((p) => p.longitude).reduce((a, b) => a > b ? a : b);
+    
+    // Add some padding
+    double padding = 0.002; // Adjust this value as needed
+    
+    return [
+      LatLng(minLat - padding, minLng - padding),
+      LatLng(maxLat + padding, minLng - padding),
+      LatLng(maxLat + padding, maxLng + padding),
+      LatLng(minLat - padding, maxLng + padding),
+    ];
+  }
+
+  // ADD THIS: Get marker color based on drain status
+  Color _getMarkerColorForDrain(String drainId) {
+    if (_regionAnalysis?.individualDrains[drainId] != null) {
+      switch (_regionAnalysis!.individualDrains[drainId]) {
+        case 'overflowing':
+          return Colors.red;
+        case 'stagnant':
+          return Colors.orange;
+        case 'normal':
+          return Colors.green;
+        default:
+          return Colors.blue;
+      }
+    }
+    return Colors.blue; // default
+  }
+
+  // ADD THIS: Convert color to marker hue
+  double _getMarkerHue(Color color) {
+    if (color == Colors.red) return BitmapDescriptor.hueRed;
+    if (color == Colors.orange) return BitmapDescriptor.hueOrange;
+    if (color == Colors.green) return BitmapDescriptor.hueGreen;
+    return BitmapDescriptor.hueAzure; // default
+  }
+
+  // ADD THIS: Get status text for drain
+  String _getDrainStatusText(String drainId) {
+    String status = _regionAnalysis?.individualDrains[drainId] ?? 'unknown';
+    return 'Status: ${status.toUpperCase()}';
   }
 
   void _searchDrain() {
@@ -174,25 +264,115 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
     }
   }
 
- 
+  // ADD THIS: Build legend widget
+  Widget _buildLegend() {
+    return Positioned(
+      bottom: 100,
+      left: 16,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Risk Levels', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            SizedBox(height: 8),
+            _buildLegendItem('High Flood Risk', Colors.red),
+            _buildLegendItem('Potential Blockage', Colors.orange),
+            _buildLegendItem('Low Risk', Colors.green),
+            SizedBox(height: 8),
+            Text('Individual Drains', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            SizedBox(height: 4),
+            _buildLegendItem('Overflowing', Colors.red),
+            _buildLegendItem('Stagnant', Colors.orange),
+            _buildLegendItem('Normal', Colors.green),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLegendItem(String label, Color color) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.7),
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(width: 6),
+          Text(label, style: TextStyle(fontSize: 11)),
+        ],
+      ),
+    );
+  }
+
+  // ADD THIS: Build risk summary panel
+  Widget _buildRiskSummary() {
+    if (_regionAnalysis == null) return Container();
+
+    int highRisk = _regionAnalysis!.regions.where((r) => r.riskLevel == 'High Flood Risk').length;
+    int blockageRisk = _regionAnalysis!.regions.where((r) => r.riskLevel == 'Potential Blockage Risk').length;
+    int lowRisk = _regionAnalysis!.regions.where((r) => r.riskLevel == 'Low Risk').length;
+
+    return Positioned(
+      top: 16,
+      right: 16,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Risk Summary', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            SizedBox(height: 6),
+            Text('High Risk: $highRisk', style: TextStyle(fontSize: 12, color: Colors.red)),
+            Text('Blockage Risk: $blockageRisk', style: TextStyle(fontSize: 12, color: Colors.orange)),
+            Text('Low Risk: $lowRisk', style: TextStyle(fontSize: 12, color: Colors.green)),
+            SizedBox(height: 4),
+            Text(
+              'Updated: ${_regionAnalysis!.lastUpdated.toString().substring(11, 16)}',
+              style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const AppDrawer(currentScreen: 'Drain Map'),
       appBar: AppBar(
-          backgroundColor: Colors.lightBlue, // Sky blue background
+          backgroundColor: Colors.lightBlue,
           title: const Text(
             'Drain Network Map',
             style: TextStyle(
-              color: Colors.white,         // Title in white
-              fontSize: 22,                // Increased font size
-              fontWeight: FontWeight.bold, // Optional: make it bold
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
           ),
           centerTitle: true,
           elevation: 6,
-          shadowColor: primaryColor.withOpacity(0.4), // Corrected method name
+          shadowColor: primaryColor.withOpacity(0.4),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(66),
             child: Container(
@@ -228,7 +408,7 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      backgroundColor: Colors.lightBlue.shade700, // optional: match AppBar
+                      backgroundColor: Colors.lightBlue.shade700,
                     ),
                     child: const Text('Go'),
                   ),
@@ -238,42 +418,62 @@ class _DrainMapScreenState extends State<DrainMapScreen> {
           ),
         ),
 
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  primaryColor.withValues(alpha: 0.05),
-                  secondaryColor.withValues(alpha: 0.05),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: _loading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : GoogleMap(
-                    initialCameraPosition: const CameraPosition(
-                      target: LatLng(3.1400, 101.6880),
-                      zoom: 15,
-                    ),
-                    markers: _markers,
-                    polylines: _drainPolylines,
-                    onMapCreated: (controller) {
-                      _mapController = controller;
-                    },
-                    myLocationButtonEnabled: true,
-                    zoomControlsEnabled: true,
-                    mapToolbarEnabled: false,
-                    compassEnabled: true,
+      // MODIFIED: Added StreamBuilder for real-time updates
+      body: StreamBuilder<RegionAnalysis?>(
+        stream: FirebaseService.getRegionAnalysisStream(),
+        builder: (context, snapshot) {
+          // Update region analysis when new data arrives
+          if (snapshot.hasData) {
+            _regionAnalysis = snapshot.data;
+            // Rebuild markers and polygons with new data
+            if (_drainMap.isNotEmpty) {
+              _markers = buildMarkers(_drainMap);
+              _regionPolygons = buildRegionPolygons(_regionAnalysis!);
+            }
+          }
+
+          return Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      primaryColor.withValues(alpha: 0.05),
+                      secondaryColor.withValues(alpha: 0.05),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-          ),
-          
-        ],
-      ),
+                ),
+                child: _loading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : GoogleMap(
+                        initialCameraPosition: const CameraPosition(
+                          target: LatLng(3.1400, 101.6880),
+                          zoom: 15,
+                        ),
+                        markers: _markers,
+                        polylines: _drainPolylines,
+                        polygons: _regionPolygons, // ADD THIS
+                        onMapCreated: (controller) {
+                          _mapController = controller;
+                        },
+                        myLocationButtonEnabled: true,
+                        zoomControlsEnabled: true,
+                        mapToolbarEnabled: false,
+                        compassEnabled: true,
+                      ),
+              ),
+              // ADD THESE: Overlay widgets
+              _buildLegend(),
+              _buildRiskSummary(),
+            ],
+          );
+        },
+      ), // MODIFIED: End of StreamBuilder
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: secondaryColor,
         elevation: 6,
